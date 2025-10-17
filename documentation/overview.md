@@ -1,24 +1,36 @@
 
-# Using the Spark CDM Connector
+# Using the Spark CDM Connector - Fabric Runtime 1.3 Edition
 
 ## Overview
 
-The Spark CDM Connector enables a Spark program to read and write CDM entities in a CDM folder via Spark dataframes.
+> **⚠️ DISCLAIMER**: This is a private fork of the original Azure Spark CDM Connector, optimized for Microsoft Fabric Runtime 1.3 compatibility. This version is **NOT officially supported by Microsoft**.
+
+This Spark CDM Connector enables a Spark program to read and write CDM entities in a CDM folder via Spark dataframes, with enhanced support for:
+- **Apache Spark 3.5** (Fabric Runtime 1.3)
+- **Modern Azure Authentication** (MSAL4J)
+- **Enhanced Performance** optimizations
 
 For information on defining CDM documents, see:
 [https://docs.microsoft.com/en-us/common-data-model/](https://docs.microsoft.com/en-us/common-data-model/).
 
-The connector is currently using CDM OM version 1.2.0
+This fork uses CDM Object Model version 2.8.0.
 
-## Using the Spark CDM connector
+## Installation
 
-The Spark CDM Connector is pre-installed on Azure Synapse and requires no additional installation.
+For complete installation instructions including authentication setup, JAR deployment, and troubleshooting, please refer to:
 
-Note that there may be a delay before the latest version of the connector is available in Synapse. Use the API below to retrieve the current version of the Spark CDM Connector and compare with the [release notes](https://github.com/Azure/spark-cdm-connector/releases) in GitHub.
+**📋 [Microsoft Fabric Runtime 1.3 Installation Guide](FABRIC_INSTALLATION_GUIDE.md)**
 
-```scala
-com.microsoft.cdm.BuildInfo.version
-```
+This comprehensive guide covers:
+- Prerequisites and environment setup
+- Step-by-step installation procedures
+- Authentication configuration (Service Principal, Managed Identity, Interactive)
+- Performance tuning recommendations
+- Troubleshooting common issues
+
+### Quick Reference
+
+For official Microsoft-supported versions, use the [original Azure repository](https://github.com/Azure/spark-cdm-connector).
 
 ## Samples
 Checkout the [sample code and CDM files](../samples/) for a quick start.
@@ -28,16 +40,17 @@ Checkout the [sample code and CDM files](../samples/) for a quick start.
 
 The following scenarios are supported:
 - Spark 2 and Spark 3 are supported. Refer to table.
-  |CDM Version| Spark Version|
-  |--|--|
-  |0.x|2.4|
-  |spark3.1-1.x|3.1.x|
-  |spark3.2-1.x|3.2.x|
+  |CDM Version| Spark Version| Fabric Runtime |
+  |--|--|--|
+  |spark3.5-1.20.0|3.5.x**|Runtime 1.3|
 - Reading data from an entity in a CDM folder into a Spark dataframe.
-- Writing from a Spark dataframe to an entity in a CDM folder based on a CDM entity definition.
-- Writing from a Spark dataframe to an entity in a CDM folder based on the dataframe schema.
+- **[⚠️ Not yet supported with Farbic Runime 1.3]** Writing from a Spark dataframe to an entity in a CDM folder based on a CDM entity definition.
+- **[⚠️ Not yet supported with Farbic Runime 1.3]** Writing from a Spark dataframe to an entity in a CDM folder based on the dataframe schema.
+- **NEW**: Microsoft Fabric Runtime 1.3 support.
 
 ### Capabilities/limitations
+
+> **⚠️ COMPATIBILITY NOTICE**: The following section is kept from the original documentation. Not all features have been tested with this fork against Microsoft Fabric Runtime 1.3. **Write operations are currently not working/supported in Fabric Runtime 1.3** - only read operations have been validated. Use with caution and test thoroughly in your specific environment.
 
 The following capabilities or limitations apply:
 - Supports reading and writing to CDM folders in ADLS gen2 **with HNS enabled**.
@@ -63,6 +76,8 @@ The following scenarios are not supported:
 - Schema evolution - where entity partitions reference different versions of the entity definition 
 
 ## Using the Spark CDM connector to read and write CDM data
+
+> **⚠️ COMPATIBILITY NOTICE**: The following section is kept from the original documentation. Not all features have been tested with this fork against Microsoft Fabric Runtime 1.3. **Write operations are currently not working/supported in Fabric Runtime 1.3** - only read operations have been validated. Use with caution and test thoroughly in your specific environment.
 
 The Spark CDM connector is used to modify normal Spark dataframe read and write behavior with a series of options and modes used as described below.
 

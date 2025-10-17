@@ -1,0 +1,97 @@
+{
+  "manifestName": "FabricTestData",
+  "manifestDeclaration": {
+    "manifestName": "FabricTestData",
+    "explanation": "Test data for Spark 3.5 CDM Connector in Microsoft Fabric Runtime 1.3"
+  },
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "cdm:/foundations.cdm.json"
+    },
+    {
+      "corpusPath": "/Employee.cdm.json"
+    },
+    {
+      "corpusPath": "/Customer.cdm.json"
+    },
+    {
+      "corpusPath": "/SalesOrder.cdm.json"
+    }
+  ],
+  "entities": [
+    {
+      "type": "LocalEntity",
+      "entityName": "Employee",
+      "entityPath": "Employee.cdm.json/Employee",
+      "dataPartitions": [
+        {
+          "location": "Employee/Employee_001.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "Employee/Employee_002.parquet",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.parquet"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "Customer",
+      "entityPath": "Customer.cdm.json/Customer",
+      "dataPartitions": [
+        {
+          "location": "Customer/Customer_001.csv",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.CSV",
+              "arguments": [
+                {
+                  "name": "columnHeaders",
+                  "value": "true"
+                },
+                {
+                  "name": "delimiter",
+                  "value": ","
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LocalEntity",
+      "entityName": "SalesOrder",
+      "entityPath": "SalesOrder.cdm.json/SalesOrder",
+      "dataPartitions": [
+        {
+          "location": "SalesOrder/SalesOrder_001.parquet",
+          "exhibitsTraits": [
+            {
+              "traitReference": "is.partition.format.parquet"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -18,7 +18,7 @@ import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SaveMode, SparkSession}
 import org.scalatest.FunSuite
 
-import scala.collection.JavaConverters.iterableAsScalaIterableConverter
+import scala.collection.JavaConverters._
 import scala.io.Source
 import scala.util.Random
 import scala.util.Random.javaRandomToRandom

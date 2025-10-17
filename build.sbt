@@ -1,3 +1,17 @@
+/*
+ * Spark CDM Connector - Fabric Runtime 1.3 Edition
+ * 
+ * This is a PRIVATE FORK of the original Microsoft Azure Spark CDM Connector
+ * Source: https://github.com/Azure/spark-cdm-connector
+ * 
+ * Upgraded for:
+ * - Apache Spark 3.5.0 (Microsoft Fabric Runtime 1.3)
+ * - Enhanced Azure authentication (MSAL4J)
+ * - Modern dependency management
+ * 
+ * NOT OFFICIALLY SUPPORTED BY MICROSOFT
+ */
+
 name := "spark-cdm-connector"
 
 //the groupid
@@ -17,23 +31,23 @@ pomPostProcess := { (node: XmlNode) =>
   }).transform(node).head
 }
 
-version := "spark3.3-1.19.7"
+version := "spark3.5-1.20.0"
 
 crossPaths := false
 ThisBuild / scalaVersion := "2.12.15"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 
-libraryDependencies += "com.fasterxml.jackson.datatype" % "jackson-datatype-jdk8" % "2.13.4"
-libraryDependencies += "com.fasterxml.jackson.datatype" % "jackson-datatype-jsr310" % "2.13.4"
+libraryDependencies += "com.fasterxml.jackson.datatype" % "jackson-datatype-jdk8" % "2.15.2"
+libraryDependencies += "com.fasterxml.jackson.datatype" % "jackson-datatype-jsr310" % "2.15.2"
 
 //these libraries already exist in spark HDI 2.4.0 - don't include them building the uber jar
-dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.13.4.1"
-libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.13.4"
-libraryDependencies += "com.fasterxml.jackson.core" % "jackson-core" % "2.13.4"
-libraryDependencies += "com.fasterxml.jackson.core" % "jackson-annotations" % "2.13.4"
+dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.15.2"
+libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.15.2"
+libraryDependencies += "com.fasterxml.jackson.core" % "jackson-core" % "2.15.2"
+libraryDependencies += "com.fasterxml.jackson.core" % "jackson-annotations" % "2.15.2"
 libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.12.0"  % "provided"
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.3.0" % "provided"
-libraryDependencies += "org.apache.spark" %% "spark-core" % "3.3.0" % "provided"
+libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.5.0" % "provided"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "3.5.0" % "provided"
 libraryDependencies += "org.apache.httpcomponents" % "httpclient" % "4.5.13" % "provided"
 libraryDependencies += "com.google.guava" % "guava" % "14.0.1" % "provided"
 libraryDependencies += "commons-io" % "commons-io" % "2.11.0" % "provided"
@@ -42,8 +56,9 @@ libraryDependencies += "com.microsoft.commondatamodel" % "cdmstandards" % "2.8.0
 libraryDependencies += "org.apache.hadoop" % "hadoop-azure" % "3.3.1" % "provided"
 libraryDependencies += "org.apache.hadoop" % "hadoop-common" % "3.3.1" % "provided"
 
-resolvers += "Maven Twitter Releases" at "https://maven.twttr.com/"
-libraryDependencies += "com.hadoop.gplcompression" % "hadoop-lzo" % "0.4.20"
+// Temporarily disabled due to network connectivity issues with Twitter Maven repo
+// resolvers += "Maven Twitter Releases" at "https://maven.twttr.com/"
+// libraryDependencies += "com.hadoop.gplcompression" % "hadoop-lzo" % "0.4.20"
 
 // The main module depends on the mock'd databricks DataricksokenProvider classes.
 lazy val root = (project in file(".")).

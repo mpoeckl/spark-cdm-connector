@@ -192,7 +192,7 @@ class CDMModelCommon (storage: String,
               getCDMSchemaFromStructType(field.dataType.asInstanceOf[StructType])
             }
           } else {
-            CDMDataFormat.withName(attrDef.fetchDataFormat().name()).toString
+            attrDef.fetchDataFormat().toString
           }
         }
       }
@@ -336,12 +336,7 @@ class CDMModelCommon (storage: String,
           name = attrDef.getName()
           var precision = 0;
           var scale = 0;
-          var dataFormat = attrDef.fetchDataFormat().toString
-          // ADF assumes Unknown is of type String, so we are doing the same
-          if (dataFormat== "Unknown") {
-            SparkCDMLogger.log(Level.WARN, "Mapping Unknown type to String for attribute " + name, logger)
-            dataFormat = "String"
-          }
+          val dataFormat = attrDef.fetchDataFormat().name()
           if(dataFormat == CDMDataFormat.Decimal.toString) {
             /* Get the trait with namedReference = is.dataFormat.numeric.shaped. We also want to make sure there are arguments in the trait.
             In CDMModelWriter, we are explicitly adding the trait "is.dataFormat.numeric.shaped", so isFromProperty = false */
