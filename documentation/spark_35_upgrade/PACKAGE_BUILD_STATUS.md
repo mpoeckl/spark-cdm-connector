@@ -19,7 +19,7 @@
 
 ✅ **Phase 4: Documentation** - COMPLETED
 - Updated README.md and overview.md for Fabric Runtime 1.3
-- Created comprehensive FABRIC_INSTALLATION_GUIDE.md
+- Created comprehensive INSTALLATION_GUIDE.md
 - Added Spark 3.5 compatibility information
 
 ✅ **Phase 4: Package Building** - COMPLETED

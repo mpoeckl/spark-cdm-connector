@@ -34,17 +34,17 @@ This folder contains comprehensive documentation for the Spark CDM Connector upg
 
 **Key Achievements**:
 - ✅ Successfully upgraded from Spark 3.3.0 to 3.5.0
-- ✅ Maintained full backward compatibility
+- ✅ Maintained backward compatibility for reading (writing not supported yet)
 - ✅ Created production-ready JAR (22.5 MB)
 - ✅ Comprehensive test data and documentation
-- ✅ Zero breaking changes for existing applications
+- ✅ No breaking changes for existing applications for supported scenarios (reading CDM)
 
 **Final Output**: `target/spark-cdm-connector-assembly-spark3.5-1.20.0.jar`
 
 ## 📚 Related Documentation
 
 - [Main README](../../README.md) - Project overview and basic usage
-- [Fabric Installation Guide](../FABRIC_INSTALLATION_GUIDE.md) - Detailed Fabric deployment guide
+- [Spark Installation Guide](../INSTALLATION_GUIDE.md) - Detailed Fabric and Synapse Analytics deployment guide
 - [Overview](../overview.md) - Technical architecture documentation
 
 ## 🏆 Project Status

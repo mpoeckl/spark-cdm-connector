@@ -164,7 +164,7 @@ This document analyzes the feasibility of upgrading the Spark CDM Connector from
 ### Phase 4: Documentation & Release ✅ **COMPLETED**
 1. **Update Documentation** ✅ **ALL COMPLETED**
    - ✅ Added Fabric Runtime 1.3 compatibility notes to README.md
-   - ✅ Created comprehensive `FABRIC_INSTALLATION_GUIDE.md`
+   - ✅ Created comprehensive `INSTALLATION_GUIDE.md`
    - ✅ Detailed installation instructions for Fabric environments
    - ✅ Authentication setup guide (Service Principal, Managed Identity, Interactive)
    - ✅ Code examples in both Scala and Python

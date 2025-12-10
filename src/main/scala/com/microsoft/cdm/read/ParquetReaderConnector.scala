@@ -172,6 +172,18 @@ class ParquetReaderConnector(httpPrefix: String,
             } else if (fieldType.getOriginalType == OriginalType.TIME_MICROS
               && ptype == PrimitiveTypeName.INT64) {
               arr(field) = g.getLong(field, index)
+            } else if ((fieldType.getOriginalType == OriginalType.TIMESTAMP_MICROS || 
+                       fieldType.getOriginalType == OriginalType.TIMESTAMP_MILLIS) 
+                       && ptype == PrimitiveTypeName.INT64) {
+              // Handle modern Parquet timestamp formats (INT64 with TIMESTAMP logical type)
+              val timestampValue = g.getLong(field, index)
+              if (fieldType.getOriginalType == OriginalType.TIMESTAMP_MILLIS) {
+                // Convert milliseconds to microseconds (Spark uses microseconds)
+                arr(field) = timestampValue * 1000
+              } else {
+                // Already in microseconds
+                arr(field) = timestampValue
+              }
             } else {
               arr(field) = g.getValueToString(field, index)
             }
@@ -231,7 +243,21 @@ class ParquetReaderConnector(httpPrefix: String,
       case StringType => util.Try(UTF8String.fromString(value.toString)).getOrElse(null)
       case TimestampType => {
         if (value != None && value != null) {
-          return value.asInstanceOf[Long]
+          value match {
+            case l: Long => l
+            case s: String => {
+              // If timestamp is stored as string in Parquet, try to parse it
+              util.Try({
+                // Try parsing as ISO datetime format
+                val instant = java.time.Instant.parse(s)
+                java.time.temporal.ChronoUnit.MICROS.between(java.time.Instant.EPOCH, instant)
+              }).getOrElse({
+                // If that fails, try parsing as epoch milliseconds string
+                util.Try(s.toLong).getOrElse(null)
+              })
+            }
+            case _ => value.asInstanceOf[Long]
+          }
         } else {
           null
         }

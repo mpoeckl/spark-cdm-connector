@@ -13,7 +13,7 @@ This repository is a **PRIVATE FORK** of the original Microsoft Azure Spark CDM 
 ### This Fork
 
 - **Maintainer**: Private contributor (mpoeckl)
-- **Purpose**: Provide Spark 3.5 / Microsoft Fabric Runtime 1.3 compatibility
+- **Purpose**: Provide Spark 3.5 / Microsoft Fabric Runtime 1.3 and Azure Synapse Analytics Spark 3.5 compatibility
 - **Support**: Community-based, no official support
 - **Updates**: May not be regularly maintained
 
@@ -21,6 +21,7 @@ This repository is a **PRIVATE FORK** of the original Microsoft Azure Spark CDM 
 
 - **Spark Version**: Upgraded from 3.3 to 3.5
 - **Fabric Compatibility**: Optimized for Fabric Runtime 1.3
+- **Azure Synapse Analytics Compatibility**: Apache Spark 3.5 Pools
 - **Dependencies**: Updated Jackson, CDM libraries
 - **Authentication**: Enhanced MSAL4J integration
 

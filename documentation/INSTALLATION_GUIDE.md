@@ -1,17 +1,26 @@
-# Microsoft Fabric Runtime 1.3 Installation Guide
+# Spark 3.5 CDM Connector Installation Guide
 
-> **⚠️ DISCLAIMER**: This guide is for a **private fork** of the Azure Spark CDM Connector, optimized for Fabric Runtime 1.3. This version is **NOT officially supported by Microsoft**.
+> **⚠️ DISCLAIMER**: This guide is for a **private fork** of the Azure Spark CDM Connector, optimized for Apache Spark 3.5. This version is **NOT officially supported by Microsoft**.
 
-This guide provides step-by-step instructions for installing and using the Spark CDM Connector in Microsoft Fabric Runtime 1.3 with Apache Spark 3.5.
+This guide provides step-by-step instructions for installing and using the Spark CDM Connector with Apache Spark 3.5 on:
+- **Microsoft Fabric Runtime 1.3** (Spark 3.5, Delta 3.2)
+- **Azure Synapse Analytics** (Spark 3.5 pools)
 
 ## Prerequisites
 
+### For Microsoft Fabric Runtime 1.3
 - **Microsoft Fabric Workspace**: Access to a Fabric workspace with Spark capabilities
 - **Fabric Runtime 1.3**: Ensure your workspace is configured to use Fabric Runtime 1.3 (Spark 3.5, Delta 3.2)
 - **Data Storage**: Access to storage where your CDM data resides:
   - **OneLake**: Microsoft Fabric's native data lake (recommended for Fabric environments)
   - **ADLS Gen2**: Azure Data Lake Storage Gen2 with HNS enabled
-- **Authentication**: Appropriate permissions for the storage account (Managed Identity, SAS token, or App Registration)
+- **Authentication**: Appropriate permissions for the storage account (Service Principal for OneLake or ADLS Gen 2, or SAS token for ADLS Gen2)
+
+### For Azure Synapse Analytics
+- **Synapse Workspace**: Access to an Azure Synapse Analytics workspace
+- **Spark 3.5 Pool**: Apache Spark 3.5 pool configured in your workspace
+- **Data Storage**: Azure Data Lake Storage Gen2 with HNS enabled
+- **Authentication**: Synapse Managed Identity, Service Principal, or SAS token with appropriate RBAC permissions
 
 ## Building the Connector (If Not Using Pre-built JAR)
 
@@ -43,7 +52,9 @@ If you're building from source, follow these steps:
    - **Size**: ~22.5 MB (uber JAR with all dependencies)
    - **Contents**: CDM connector + Jackson 2.15.2 + MSAL4J + CDM Standards
 
-## Step 1: Configure Fabric Runtime 1.3
+## Step 1: Configure Spark 3.5 Environment
+
+### For Microsoft Fabric Runtime 1.3
 
 1. Navigate to your **Fabric Workspace settings**
 2. Go to **Data Engineering/Science** → **Spark Settings**
@@ -52,6 +63,15 @@ If you're building from source, follow these steps:
 5. Select **1.3 (Spark 3.5, Delta 3.2)** and save your changes
 
 ![Runtime Selection](https://learn.microsoft.com/en-us/fabric/data-engineering/media/mrs/runtime13.png)
+
+### For Azure Synapse Analytics
+
+1. Navigate to your **Synapse workspace**
+2. Go to **Manage** → **Apache Spark pools**
+3. Create a new pool or select an existing pool
+4. Under **Apache Spark version**, select **3.5** (or the latest Spark 3.5.x version available)
+5. Configure pool size and settings as needed
+6. Review and create the Spark pool
 
 ## Step 2: Install the CDM Connector
 
@@ -64,15 +84,23 @@ If you're building from source, follow these steps:
    - Find the compiled JAR at: `target/spark-cdm-connector-assembly-spark3.5-1.20.0.jar`
    - Or download from the releases section of this repository
 
-2. **Install in Fabric Environment**:
+2. **Install in Microsoft Fabric**:
    - In your Fabric workspace, go to **Data Engineering** → **Environment**
    - Create or edit an environment
    - Upload the JAR file under **Custom libraries**
    - Save and publish the environment
 
-3. **Alternative: Session-level Installation**:
+3. **Install in Azure Synapse Analytics**:
+   - In your Synapse workspace, go to **Manage** → **Workspace packages**
+   - Click **Upload** and select the JAR file
+   - In your Synapse workspace, go to **Manage** → **Apache Spark pools**
+   - Browse to your Spark 3.5 pool and select **Packages** in the context menu
+   - Click **+ Select from workspace packages** and select the uploaded package
+   - Apply changes and restart the pool if needed
+
+4. **Alternative: Session-level Installation**:
 ```python
-# Reference the JAR in your notebook session
+# Reference the JAR in your notebook session (works in both Fabric and Synapse)
 spark.conf.set("spark.jars", "/path/to/spark-cdm-connector-assembly-spark3.5-1.20.0.jar")
 ```
 
@@ -80,23 +108,44 @@ spark.conf.set("spark.jars", "/path/to/spark-cdm-connector-assembly-spark3.5-1.2
 
 ### 🔐 Authentication Methods and Storage Support
 
-> **⚠️ Testing Status**: This fork has been tested only with Microsoft Fabric Runtime 1.3. Other platforms are not tested.
+> **⚠️ Testing Status**: This fork has been tested with Microsoft Fabric Runtime 1.3 and Azure Synapse Analytics Spark 3.5 pools.
 
-| Authentication Method | Platform | ADLS Gen2 Support | OneLake Support |
-|----------------------|------------------|-------------------|-----------------|
-| **Managed Identity** | Microsoft Fabric | ❌ Currently not supported  | ❌ Currently not supported |
-| **Service Principal** | Microsoft Fabric| ✅ Supported | ✅ Required for OneLake access |
-| **SAS Token** | Microsoft Fabric | ✅ Supported | ❌ Not supported |
-| **Interactive/User** | Microsoft Fabric | ❌ Not supported | ❌ Not supported |
+#### Authentication Support Matrix
 
-### Option A: Service Principal (Recommended for Production)
+| Authentication Method | ADLS Gen2 | OneLake | Platform Notes |
+|----------------------|-----------|---------|----------------|
+| **Service Principal** | ✅ Supported | ✅ Supported | Supported on both Fabric and Synapse.<br>**Required** for OneLake in Fabric. |
+| **Managed Identity** | ✅ Synapse <br> ❌ Fabric | ✅ Synapse <br> ❌ Fabric | Supported in Synapse Analytics.<br>**Not supported in Fabric.** |
+| **SAS Token** | ✅ Supported | ❌ Not supported | Supported on Fabric and Synapse.<br>**ADLS Gen2 only.** |
+| **Interactive/User** | ❌ Not supported | ❌ Not supported | Not supported on any platform. |
 
-Service Principal authentication provides the most reliable access to both ADLS Gen2 and OneLake storage.
+### Option A: Azure Synapse Analytics ONLY: Managed Identity
+
+Managed Identity is supported on Azure Synapse Analytics only.
+
+#### ADLS Gen2 or OneLake (Python Example)
+```python
+# Synapse Managed Identity authentication
+# Supported for ADLS Gen2 and OneLake access from Synapse Analytics only
+# Not supported in Microsoft Fabric Spark!
+
+df = spark.read \
+    .format("com.microsoft.cdm") \
+    .option("storage", "...") \
+    .option("manifestPath", "...") \
+    .option("entity", "...") \
+    .load()
+```
+
+### Option B: Service Principal (Required for Microsoft Fabric Spark and OneLake)
+
+Service Principal authentication provides the most reliable access to both ADLS Gen2 and OneLake storage from Microsoft Fabric.
+Supported for Fabric and Synapse Spark.
 
 #### ADLS Gen2 or OneLake (Python Example)
 ```python
 # Service Principal authentication
-# Required for OneLake access, also works with ADLS Gen2
+# Required for OneLake access from Fabric Spark, also works with ADLS Gen2
 
 df = spark.read \
     .format("com.microsoft.cdm") \
@@ -109,14 +158,14 @@ df = spark.read \
     .load()
 ```
 
-### Option B: SAS Token (ADLS Gen2 Only)
+### Option C: SAS Token (ADLS Gen2 Only)
 
 > **📋 Note**: SAS Token authentication only works with ADLS Gen2 storage, not with OneLake.
 
 #### ADLS Gen2 (Scala Example)
 
 ```scala
-// SAS Token based authentication
+// SAS Token based authentication, supported for Synapse and Fabric Spark
 val df = spark.read
   .format("com.microsoft.cdm")
   .option("sasToken", "your-sas-token")
@@ -137,7 +186,7 @@ val df = spark.read
 // Read CDM entity from ADLS Gen2
 val df = spark.read
     .format("com.microsoft.cdm")
-    /* add SAS Token or Service Principal authentication options */
+    /* add SAS Token or Service Principal authentication options if required */
     .option("storage", "your-storageaccount.dfs.core.windows.net")
     .option("manifestPath", "your-container/cdm-folder/YourManifest.manifest.cdm.json")
     .option("entity", "your-cdm-entity")
@@ -153,6 +202,7 @@ df.printSchema()
 **Python Example - Reading from OneLake:**
 ```python
 # Read CDM entity from OneLake
+# Service Principal authentication required for Fabric Spark, Synapse may use Managed Identity (remove appId, appKey and tenantId)
 df = spark.read \
     .format("com.microsoft.cdm") \
     .option("appId", "your-app-id") \
@@ -167,6 +217,7 @@ df = spark.read \
 **Scala Example - Reading from OneLake:**
 ```scala
 // Read CDM entity from OneLake
+// Service Principal authentication required for Fabric Spark, Synapse may use Managed Identity (remove appId, appKey and tenantId)
 val df = spark.read
   .format("com.microsoft.cdm")
   .option("appId", "your-app-id")

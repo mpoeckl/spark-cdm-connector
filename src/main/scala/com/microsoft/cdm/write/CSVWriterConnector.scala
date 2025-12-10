@@ -53,7 +53,13 @@ class CSVWriterConnector(prefix: String,
 
   def writeRow(row: InternalRow, dataConverter: DataConverter): Unit =   {
     val strings = JavaConversions.seqAsJavaList(row.toSeq(schema).zipWithIndex.map{ case(col, index) =>
-      dataConverter.dataToString(col, schema.fields(index).dataType, cdmSchema(index))
+      val cdmType = if (index < cdmSchema.size) cdmSchema.toList(index) else {
+        throw new RuntimeException(s"Schema mismatch: DataFrame has ${schema.fields.length} columns but CDM schema has ${cdmSchema.size} types. Column index: $index")
+      }
+      if (cdmType == null) {
+        throw new RuntimeException(s"CDM schema type is null at index $index for column '${schema.fields(index).name}'. DataFrame columns: ${schema.fields.length}, CDM schema size: ${cdmSchema.size}")
+      }
+      dataConverter.dataToString(col, schema.fields(index).dataType, cdmType)
     })
 
     var strArray = new Array[String](strings.size)

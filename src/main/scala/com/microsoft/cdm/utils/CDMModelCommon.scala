@@ -201,7 +201,7 @@ class CDMModelCommon (storage: String,
   }
 
   def getType(attrs: CdmCollection[CdmAttributeItem]): Iterable[Any] = {
-    val attrTypes = attrs.asScala.map(attr => {
+    val attrTypes = attrs.asScala.flatMap(attr => {
       attr.getObjectType match {
         case CdmObjectType.TypeAttributeDef => {
           val attrDef = attr.asInstanceOf[CdmTypeAttributeDefinition]
@@ -218,10 +218,10 @@ class CDMModelCommon (storage: String,
               precision = traitName.asInstanceOf[CdmTraitReference].getArguments.fetchValue("precision").toString.toInt
               scale = traitName.asInstanceOf[CdmTraitReference].getArguments.fetchValue("scale").toString.toInt
             }
-            CDMDecimalType(precision, scale)
+            List(CDMDecimalType(precision, scale))
           }else {
             try{
-              CDMDataFormat.withName(dataFormat).toString
+              List(CDMDataFormat.withName(dataFormat).toString)
             }catch{
               case _ =>  throw new UnsupportedOperationException(String.format(Messages.cdmDataFormatNotYetSupported, attrDef.getName))
             }

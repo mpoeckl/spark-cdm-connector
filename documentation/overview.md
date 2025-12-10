@@ -1,12 +1,12 @@
 
-# Using the Spark CDM Connector - Fabric Runtime 1.3 Edition
+# Using the Spark CDM Connector - Spark 3.5 Edition
 
 ## Overview
 
-> **⚠️ DISCLAIMER**: This is a private fork of the original Azure Spark CDM Connector, optimized for Microsoft Fabric Runtime 1.3 compatibility. This version is **NOT officially supported by Microsoft**.
+> **⚠️ DISCLAIMER**: This is a private fork of the original Azure Spark CDM Connector, optimized for Apache Spark 3.5 compatibility. This version is **NOT officially supported by Microsoft**.
 
 This Spark CDM Connector enables a Spark program to read and write CDM entities in a CDM folder via Spark dataframes, with enhanced support for:
-- **Apache Spark 3.5** (Fabric Runtime 1.3)
+- **Apache Spark 3.5** (Microsoft Fabric Runtime 1.3, Azure Synapse Analytics Spark 3.5 pools)
 - **Modern Azure Authentication** (MSAL4J)
 - **Enhanced Performance** optimizations
 
@@ -19,12 +19,12 @@ This fork uses CDM Object Model version 2.8.0.
 
 For complete installation instructions including authentication setup, JAR deployment, and troubleshooting, please refer to:
 
-**📋 [Microsoft Fabric Runtime 1.3 Installation Guide](FABRIC_INSTALLATION_GUIDE.md)**
+**📋 [Spark 3.5 Installation Guide](INSTALLATION_GUIDE.md)**
 
 This comprehensive guide covers:
-- Prerequisites and environment setup
+- Prerequisites and environment setup for Fabric and Synapse
 - Step-by-step installation procedures
-- Authentication configuration (Service Principal, Managed Identity, Interactive)
+- Authentication configuration (Service Principal, Managed Identity, SAS Token)
 - Performance tuning recommendations
 - Troubleshooting common issues
 
@@ -40,13 +40,13 @@ Checkout the [sample code and CDM files](../samples/) for a quick start.
 
 The following scenarios are supported:
 - Spark 2 and Spark 3 are supported. Refer to table.
-  |CDM Version| Spark Version| Fabric Runtime |
+  |CDM Version| Spark Version| Platform Compatibility |
   |--|--|--|
-  |spark3.5-1.20.0|3.5.x**|Runtime 1.3|
+  |spark3.5-1.20.0|3.5.x|Microsoft Fabric Runtime 1.3, Azure Synapse Analytics Spark 3.5 pools|
 - Reading data from an entity in a CDM folder into a Spark dataframe.
-- **[⚠️ Not yet supported with Farbic Runime 1.3]** Writing from a Spark dataframe to an entity in a CDM folder based on a CDM entity definition.
-- **[⚠️ Not yet supported with Farbic Runime 1.3]** Writing from a Spark dataframe to an entity in a CDM folder based on the dataframe schema.
-- **NEW**: Microsoft Fabric Runtime 1.3 support.
+- **[⚠️ Not yet supported with Spark 3.5]** Writing from a Spark dataframe to an entity in a CDM folder based on a CDM entity definition.
+- **[⚠️ Not yet supported with Spark 3.5]** Writing from a Spark dataframe to an entity in a CDM folder based on the dataframe schema.
+- **NEW**: Microsoft Fabric Runtime 1.3 and Azure Synapse Analytics Spark 3.5 support.
 
 ### Capabilities/limitations
 

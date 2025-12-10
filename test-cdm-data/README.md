@@ -1,10 +1,10 @@
 # Test CDM Data for Spark 3.5 Connector
 
-This directory contains complete test CDM data for validating the Spark 3.5 CDM Connector with Microsoft Fabric Runtime 1.3.
+This directory contains complete test CDM data for validating the Spark 3.5 CDM Connector with Microsoft Fabric Runtime 1.3 and Azure Synapse Analytics Apache Spark Pools 3.5.
 
 ## Structure
 
-- **FabricTestData.manifest.cdm.json**: Main manifest file defining the CDM folder structure
+- **CdmSampleData.manifest.cdm.json**: Main manifest file defining the CDM folder structure
 - **Employee.cdm.json**: Employee entity definition with various data types
 - **Customer.cdm.json**: Customer entity definition with business data
 - **SalesOrder.cdm.json**: Sales order entity definition with relationships
@@ -63,7 +63,7 @@ val employees = spark.read
   .format("com.microsoft.cdm")
   .option("sasToken", "your-sas-token")
   .option("storage", "your-storage-account.dfs.core.windows.net")
-  .option("manifestPath", "your-container/your-cdm-folder/FabricTestData.manifest.cdm.json")
+  .option("manifestPath", "your-container/your-cdm-folder/CdmSampleData.manifest.cdm.json")
   .option("entity", "Employee")
   .load()
 
@@ -75,6 +75,6 @@ employees.printSchema()
 
 - All test data is synthetic and for testing purposes only at your own risk
 - The structure follows CDM 1.0 format standards
-- Compatible and testet with Fabric Runtime 1.3
+- Compatible and testet with Fabric Runtime 1.3 (Spark 3.5) and Azure Synapse Analytics Apache Spark Pools 3.5
 - Includes proper CDM traits and data type specifications
 - Employee entity includes both CSV and Parquet partitions for comprehensive format testing

@@ -58,7 +58,7 @@ Successfully upgraded the Spark CDM Connector from Spark 3.3 to 3.5 for compatib
    - Fabric Runtime 1.3 requirements
    - Updated installation instructions
 
-2. **FABRIC_INSTALLATION_GUIDE.md** (New):
+2. **INSTALLATION_GUIDE.md** (New):
    - Complete installation procedures for Fabric
    - Authentication configuration (Service Principal, Managed Identity, Interactive)
    - Code examples in both Scala and Python

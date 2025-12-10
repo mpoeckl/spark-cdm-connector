@@ -1,21 +1,22 @@
-# Spark CDM Connector - Fabric Runtime 1.3 Edition
+# Spark CDM Connector - Spark 3.5 Edition
 
 > **🚨 IMPORTANT DISCLAIMER**  
-> This is a **private fork** of the original [Azure Spark CDM Connector](https://github.com/Azure/spark-cdm-connector) maintained independently for Microsoft Fabric Runtime 1.3 compatibility. This fork is **NOT officially supported by Microsoft** and is provided as-is for community use.
+> This is a **private fork** of the original [Azure Spark CDM Connector](https://github.com/Azure/spark-cdm-connector) maintained independently for Apache Spark 3.5 compatibility. This fork is **NOT officially supported by Microsoft** and is provided as-is for community use.
 > 
 > **📋 Please read the full [DISCLAIMER](DISCLAIMER.md) before using this software.**
 
 ## About This Fork
 
 This repository contains an upgraded version of the Spark CDM Connector specifically optimized for:
-- **Apache Spark 3.5** (Microsoft Fabric Runtime 1.3)
-- **Enhanced Fabric Integration**
+- **Apache Spark 3.5** (Microsoft Fabric Runtime 1.3, Azure Synapse Analytics)
+- **Enhanced Cloud Platform Integration** (Fabric and Synapse)
 - **Modern Dependency Management**
 
 ### 🎯 Key Improvements
 
 - ✅ **Spark 3.5 Compatibility**: Full support for Apache Spark 3.5.0
-- ✅ **Fabric Runtime 1.3**: Native integration with Microsoft Fabric
+- ✅ **Microsoft Fabric Runtime 1.3**: Native integration with Microsoft Fabric
+- ✅ **Azure Synapse Analytics**: Compatible with Synapse Spark 3.5 pools
 - ✅ **Updated Dependencies**: Jackson 2.15.2, CDM Standards 2.8.0
 - ✅ **Enhanced Authentication**: MSAL4J integration for Azure AD
 - ✅ **Performance Optimizations**: Leverages latest Spark engine improvements
@@ -27,6 +28,7 @@ This repository contains an upgraded version of the Spark CDM Connector specific
 | **CDM Connector** | spark3.5-1.20.0 | This fork |
 | **Apache Spark** | 3.5.0 | Target runtime |
 | **Fabric Runtime** | 1.3 | Compatible |
+| **Synapse Spark Pool** | 3.5.x | Compatible |
 | **Scala** | 2.12.15 | Language version |
 | **Java** | 11+ | Required runtime |
 
@@ -48,7 +50,7 @@ For the **official Microsoft-supported version**, please use the [original Azure
 
 ### 📚 Documentation
 
-- **Installation Guide**: [Fabric Installation Guide](documentation/FABRIC_INSTALLATION_GUIDE.md)
+- **Installation Guide**: [Spark 3.5 Installation Guide](documentation/INSTALLATION_GUIDE.md) - Covers both Fabric and Synapse
 - **Usage Overview**: [Using the Spark CDM Connector](documentation/overview.md)
 - **Upgrade Details**: [Spark 3.5 Upgrade Documentation](documentation/spark_35_upgrade/)
 

@@ -1,8 +1,8 @@
 {
-  "manifestName": "FabricTestData",
+  "manifestName": "CdmSampleData",
   "manifestDeclaration": {
-    "manifestName": "FabricTestData",
-    "explanation": "Test data for Spark 3.5 CDM Connector in Microsoft Fabric Runtime 1.3"
+    "manifestName": "CdmSampleData",
+    "explanation": "Test data for Spark 3.5 CDM Connector for Microsoft Fabric Runtime 1.3 or Azure Synapse Spark 3.5"
   },
   "jsonSchemaSemanticVersion": "1.0.0",
   "imports": [

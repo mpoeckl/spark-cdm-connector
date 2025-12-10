@@ -120,6 +120,11 @@ class DataConverter extends Serializable{
         val date = instant.atZone(ZoneId.systemDefault())
         date.format(DateTimeFormatter.ISO_INSTANT)
       }
+      case (TimestampType, v: String, _) => {
+        // Handle String values that weren't properly converted during read
+        // This can happen if datetime parsing failed or data is already in string format
+        v
+      }
       case (TimestampType, v: Long, "Time") => {
         val nanoAdjustment  = TimeUnit.MICROSECONDS.toNanos(Math.floorMod(v.asInstanceOf[Long], TimeUnit.SECONDS.toMicros(1)))
         val instant = Instant.ofEpochSecond(TimeUnit.MICROSECONDS.toSeconds(v.asInstanceOf[Long]), nanoAdjustment);
