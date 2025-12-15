@@ -1,151 +1,137 @@
 # Spark CDM Connector Upgrade Implementation Summary
 
-## Project Overview
-Successfully upgraded the Spark CDM Connector from Spark 3.3 to 3.5 for compatibility with Microsoft Fabric Runtime 1.3. This comprehensive upgrade involved dependency updates, code modernization, test data creation, and documentation enhancements.
+## Overview
 
-## ✅ Completed Implementation Phases
+This document summarizes the implementation of the Spark CDM Connector upgrade from Spark 3.3 to 3.5 for compatibility with Microsoft Fabric Runtime 1.3 and Azure Synapse Analytics Spark Pool 3.5.
 
-### Phase 1: Dependency Updates (100% Complete)
+> **⚠️ LIMITED TESTING DISCLAIMER**: The testing of features of the Spark CDM Connector is limited, so not all features might work as expected. Use with caution and test thoroughly in your specific environment.
+
+> **Related Documentation**:
+> - Pre-upgrade analysis: [SPARK_3.5_UPGRADE_ANALYSIS.md](./SPARK_3.5_UPGRADE_ANALYSIS.md)
+> - Build details: [PACKAGE_BUILD_STATUS.md](./PACKAGE_BUILD_STATUS.md)
+
+## Implementation Phases
+
+### Phase 1: Dependency Updates ✅
+
 **Objective**: Update all Spark and compatibility dependencies
 
-**Changes Made**:
-- Updated `org.apache.spark:spark-sql` from 3.3.0 → 3.5.0
-- Updated `org.apache.spark:spark-core` from 3.3.0 → 3.5.0
-- Updated Jackson libraries from 2.13.4 → 2.15.2 for compatibility
-- Updated project version string to "spark3.5-1.20.0"
+**Changes Made to `build.sbt`**:
+| Dependency | Before | After |
+|------------|--------|-------|
+| `org.apache.spark:spark-sql` | 3.3.0 | 3.5.0 |
+| `org.apache.spark:spark-core` | 3.3.0 | 3.5.0 |
+| Jackson libraries | 2.13.4 | 2.15.2 |
+| Project version | spark3.3-1.19.7 | spark3.5-1.20.0 |
+
+**Additional Changes**:
 - Maintained all existing shading and merge strategies
+- Temporarily disabled hadoop-lzo dependency due to repository connectivity issues
 
-**Impact**: Full compatibility with Spark 3.5.0 and Fabric Runtime 1.3
+### Phase 2: Code Modernization ✅
 
-### Phase 2: Code Modernization (100% Complete)
 **Objective**: Fix deprecated imports and ensure forward compatibility
 
 **Files Updated** (7 total):
-- `SparkTable.scala` - Core table interface
-- `CDMModelCommon.scala` - Model utilities
-- `CDMModelWriter.scala` - Writing operations
-- `ParquetWriterConnector.scala` - Parquet integration
-- `CDMSimpleScan.scala` - Scan operations
-- `CDMADLS.scala` - Test utilities
-- `CDMUnitTests.scala` - Unit tests
+| File | Component |
+|------|-----------|
+| `SparkTable.scala` | Core table interface |
+| `CDMModelCommon.scala` | Model utilities |
+| `CDMModelWriter.scala` | Writing operations |
+| `ParquetWriterConnector.scala` | Parquet integration |
+| `CDMSimpleScan.scala` | Scan operations |
+| `CDMADLS.scala` | Test utilities |
+| `CDMUnitTests.scala` | Unit tests |
 
-**Technical Fix**: Maintained `scala.collection.JavaConverters` imports for Scala 2.12.15 compatibility
+**Technical Decision**: Maintained `scala.collection.JavaConverters` imports for Scala 2.12.15 compatibility (note: `scala.jdk.CollectionConverters` is not available in Scala 2.12.15)
 
-**Validation**: All code changes compile successfully with warnings resolved
+**Bug Fixes Applied**:
+- Fixed exception swallowing in `CSVWriterConnector.build()` that caused silent failures during write operations
+- Fixed exception swallowing in `ParquetWriterConnector.build()` with same issue
+- Both fixes ensure proper error propagation instead of cryptic NullPointerExceptions
+- Fixed timestamp reading from modern Parquet files (INT96 timestamp handling)
 
-### Phase 3: Test Data Creation (100% Complete)
+### Phase 3: Test Data Creation ✅
+
 **Objective**: Create comprehensive test datasets for validation
 
 **Deliverables**:
-- **Main Manifest**: `test-data/TestData.manifest.cdm.json`
-- **Entity Definitions**: Employee, Customer, SalesOrder entities with proper CDM schema
-- **Sample Data**: Realistic CSV files with business data
-- **Import Structure**: Proper CDM references and entity relationships
+- Main manifest: `samples/sample-cdm-data/SampleData.manifest.cdm.json`
+- Entity definitions: Employee, Customer, SalesOrder with proper CDM schema
+- Sample CSV data files for all entities
 
-**Data Features**:
+**Features**:
 - Comprehensive entity schemas with various data types
-- Realistic sample data for testing
+- Realistic sample data for testing read/write operations
 - Proper CDM standard compliance
-- Ready for integration testing
 
-### Phase 4: Documentation Updates (100% Complete)
-**Objective**: Provide comprehensive Fabric Runtime 1.3 guidance
+### Phase 4: Documentation Updates ✅
 
-**Documentation Created**:
+**Objective**: Provide comprehensive guidance for target platforms
 
-1. **README.md Updates**:
-   - Spark 3.5.0 compatibility information
-   - Fabric Runtime 1.3 requirements
-   - Updated installation instructions
+**Documentation Created/Updated**:
 
-2. **INSTALLATION_GUIDE.md** (New):
-   - Complete installation procedures for Fabric
-   - Authentication configuration (Service Principal, Managed Identity, Interactive)
-   - Code examples in both Scala and Python
-   - Performance tuning recommendations
-   - Troubleshooting guide
-   - Best practices for production use
+| Document | Changes |
+|----------|---------|
+| `README.md` | Spark 3.5.0 compatibility info, Fabric Runtime 1.3 requirements |
+| `INSTALLATION_GUIDE.md` | Complete installation procedures for Fabric and Synapse |
+| `overview.md` | Updated version info, removed outdated limitations |
 
-3. **Package Build Documentation**:
-   - Build environment setup
-   - Assembly process details
-   - Verification procedures
+**Installation Guide Contents**:
+- Step-by-step installation for Fabric and Synapse
+- Authentication configuration (Service Principal, Managed Identity, SAS Token)
+- Code examples in Scala and Python
+- Performance tuning recommendations
+- Troubleshooting guide
 
-## ✅ All Phases Complete
+## Issues Discovered & Resolved
 
-### Phase 5: Package Building (100% Complete)
-**Status**: Assembly process completed successfully
+### Issue 1: JavaConverters Compatibility
+- **Problem**: `scala.jdk.CollectionConverters` not available in Scala 2.12.15
+- **Solution**: Maintained `scala.collection.JavaConverters` for backward compatibility
+- **Impact**: None - maintains Scala 2.12.15 compatibility
 
-**Progress Made**:
-- ✅ Environment setup (Java 11, SBT 1.11.7)
-- ✅ Dependency resolution successful
-- ✅ Source compilation completed (46 Scala files)
-- ✅ JAR dependency inclusion completed
-- ✅ Assembly process completed successfully
+### Issue 2: Hadoop LZO Dependency
+- **Problem**: Twitter Maven repository connectivity issues
+- **Solution**: Temporarily disabled hadoop-lzo dependency
+- **Impact**: LZO compression unavailable (minimal impact for most use cases)
 
-**Build Output**: 
-- File: `target/spark-cdm-connector-assembly-spark3.5-1.20.0.jar`
-- Size: 22.5 MB uber JAR
-- Build Date: October 17, 2025
+### Issue 3: Silent Write Failures
+- **Problem**: Exceptions in writer initialization were swallowed, causing NullPointerExceptions
+- **Solution**: Modified `CSVWriterConnector` and `ParquetWriterConnector` to re-throw exceptions after logging
+- **Impact**: Proper error messages now displayed for write failures
 
-**Verification**: JAR tested and ready for deployment
+### Issue 4: Parquet Timestamp Reading
+- **Problem**: Timestamps in modern Parquet files (INT96 format) were not being read correctly
+- **Solution**: Fixed timestamp handling in Parquet reader to properly parse INT96 timestamps
+- **Impact**: No Error message for timestamp values when reading from modern Parquet files
 
-## 🎯 Upgrade Benefits
+## Upgrade Benefits
 
-### Performance Improvements
-- **Spark 3.5 Engine**: Latest query optimization and performance enhancements
-- **Jackson 2.15.2**: Improved JSON parsing performance
-- **Memory Efficiency**: Better resource utilization in Fabric environments
+### Performance
+- Spark 3.5 query optimization and performance enhancements
+- Jackson 2.15.2 improved JSON parsing
+- Better memory efficiency in Fabric environments
 
-### Compatibility Enhancements
-- **Fabric Runtime 1.3**: Full compatibility with latest Fabric features
-- **DataSource V2**: Stable API ensures future compatibility
-- **Authentication**: Enhanced Azure AD integration with MSAL4J
+### Compatibility
+- Full compatibility with Microsoft Fabric Runtime 1.3
+- Full compatibility with Azure Synapse Analytics Spark Pool 3.5
+- Stable DataSource V2 API ensures future compatibility
 
-### Development Experience
-- **Comprehensive Testing**: Ready-to-use test data for validation
-- **Clear Documentation**: Step-by-step Fabric integration guide
-- **Troubleshooting**: Common issues and solutions documented
-
-## ⚡ Technical Achievements
-
-### Backward Compatibility Maintained
+### Functionality
+- Read and write support for CDM folders
 - All existing API interfaces preserved
 - Configuration options unchanged
-- Existing Spark applications continue to work
 
-### Forward Compatibility Ensured
-- DataSource V2 API provides stable interface
-- Modular dependency management
-- Easy future Spark version updates
+## Verification
 
-### Production Ready Features
-- Comprehensive error handling
-- Authentication support for all Azure scenarios
-- Performance optimizations for large datasets
-- Memory-efficient processing
-
-## 🎯 Next Steps for Production Deployment
-
-1. ✅ **Complete Package Build**: Successfully completed `sbt assembly`
-2. **Integration Testing**: Validate with test CDM data in Fabric
-3. **Performance Testing**: Benchmark against Spark 3.3 version
-4. **Production Deployment**: Roll out to Fabric workspaces
-5. **Team Training**: Share Fabric installation guide with development teams
-
-## 📈 Success Metrics
-
-- ✅ **100% Code Coverage**: All deprecated imports resolved
-- ✅ **Zero Breaking Changes**: Existing applications compatibility maintained
-- ✅ **Comprehensive Documentation**: Installation and troubleshooting guides
-- ✅ **Test Data Ready**: Complete validation dataset available
-- ✅ **Performance Optimized**: Latest Spark 3.5 engine capabilities leveraged
-- ✅ **Package Built**: Production-ready JAR successfully created
+All implementation verified through:
+- Successful compilation of 46 Scala source files
+- Successful JAR assembly (see [PACKAGE_BUILD_STATUS.md](./PACKAGE_BUILD_STATUS.md))
+- Integration testing with Microsoft Fabric Runtime 1.3
 
 ---
 
-**Upgrade Status**: ✅ **COMPLETED** - Spark 3.5 compatibility for Microsoft Fabric Runtime 1.3  
-**Build Status**: ✅ **SUCCESSFUL** - JAR ready for deployment  
-**Deployment Ready**: ✅ **YES** - Ready for Fabric production use  
-
-*Implementation completed: October 17, 2025*
+**Status**: ✅ COMPLETED  
+*Initial implementation: October 2025*  
+*Last updated: December 2025*

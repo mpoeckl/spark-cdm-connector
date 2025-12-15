@@ -45,6 +45,7 @@ For the **official Microsoft-supported version**, please use the [original Azure
 
 - **Official Support**: Use the [original Azure repository](https://github.com/Azure/spark-cdm-connector) for Microsoft-supported versions
 - **Fork Maintenance**: This fork is maintained independently and may not receive regular updates
+- **Limited Testing**: The testing of features is limited, so not all features might work as expected
 - **Community Contributions**: Issues and PRs are welcome but response time may vary
 - **Production Use**: Consider the support implications before using in production environments
 

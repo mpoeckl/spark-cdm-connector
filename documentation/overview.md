@@ -44,13 +44,13 @@ The following scenarios are supported:
   |--|--|--|
   |spark3.5-1.20.0|3.5.x|Microsoft Fabric Runtime 1.3, Azure Synapse Analytics Spark 3.5 pools|
 - Reading data from an entity in a CDM folder into a Spark dataframe.
-- **[⚠️ Not yet supported with Spark 3.5]** Writing from a Spark dataframe to an entity in a CDM folder based on a CDM entity definition.
-- **[⚠️ Not yet supported with Spark 3.5]** Writing from a Spark dataframe to an entity in a CDM folder based on the dataframe schema.
+- Writing from a Spark dataframe to an entity in a CDM folder based on a CDM entity definition.
+- Writing from a Spark dataframe to an entity in a CDM folder based on the dataframe schema.
 - **NEW**: Microsoft Fabric Runtime 1.3 and Azure Synapse Analytics Spark 3.5 support.
 
 ### Capabilities/limitations
 
-> **⚠️ COMPATIBILITY NOTICE**: The following section is kept from the original documentation. Not all features have been tested with this fork against Microsoft Fabric Runtime 1.3. **Write operations are currently not working/supported in Fabric Runtime 1.3** - only read operations have been validated. Use with caution and test thoroughly in your specific environment.
+> **⚠️ LIMITED TESTING DISCLAIMER**: The testing of features of the Spark CDM Connector is limited, so not all features might work as expected. Use with caution and test thoroughly in your specific environment.
 
 The following capabilities or limitations apply:
 - Supports reading and writing to CDM folders in ADLS gen2 **with HNS enabled**.
@@ -77,7 +77,7 @@ The following scenarios are not supported:
 
 ## Using the Spark CDM connector to read and write CDM data
 
-> **⚠️ COMPATIBILITY NOTICE**: The following section is kept from the original documentation. Not all features have been tested with this fork against Microsoft Fabric Runtime 1.3. **Write operations are currently not working/supported in Fabric Runtime 1.3** - only read operations have been validated. Use with caution and test thoroughly in your specific environment.
+> **⚠️ LIMITED TESTING DISCLAIMER**: The testing of features of the Spark CDM Connector is limited, so not all features might work as expected. Use with caution and test thoroughly in your specific environment.
 
 The Spark CDM connector is used to modify normal Spark dataframe read and write behavior with a series of options and modes used as described below.
 

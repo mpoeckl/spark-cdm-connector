@@ -85,7 +85,8 @@ class ParquetWriterConnector(httpPrefix:String,
     }
     catch {
       case e : Exception => {
-        SparkCDMLogger.log(Level.ERROR, e.printStackTrace.toString, logger)
+        SparkCDMLogger.log(Level.ERROR, s"Failed to initialize Parquet writer for path: $filePath. Error: ${e.getMessage}", logger)
+        throw e
       }
     }
   }

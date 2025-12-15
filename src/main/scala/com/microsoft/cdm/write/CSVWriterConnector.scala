@@ -42,7 +42,10 @@ class CSVWriterConnector(prefix: String,
         writer.writeHeaders(headers: _*)
       }
     } catch {
-      case e: Throwable => SparkCDMLogger.log(Level.ERROR, e.printStackTrace.toString, logger)
+      case e: Throwable => {
+        SparkCDMLogger.log(Level.ERROR, s"Failed to initialize CSV writer for path: $filePath. Error: ${e.getMessage}", logger)
+        throw e
+      }
     }
   }
 

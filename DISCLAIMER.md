@@ -30,6 +30,7 @@ This repository is a **PRIVATE FORK** of the original Microsoft Azure Spark CDM 
 - ❌ **No Microsoft Support**: Microsoft does not provide support for this fork
 - ❌ **No SLA**: No service level agreements or guarantees
 - ❌ **No Regular Updates**: Updates depend on community contributions
+- ⚠️ **Limited Testing**: The testing of features is limited, so not all features might work as expected
 - ✅ **Community Contributions**: Issues and PRs welcome but response may vary
 
 ### Production Use Warning

@@ -1,0 +1,116 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "cdm:/foundations.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "entityName": "Employee",
+      "extendsEntity": "CdmEntity",
+      "explanation": "Employee entity for testing Spark 3.5 CDM Connector",
+      "hasAttributes": [
+        {
+          "name": "EmployeeId",
+          "dataType": "integer",
+          "dataFormat": "int32",
+          "description": "Unique identifier for employee",
+          "appliedTraits": [
+            {
+              "traitReference": "is.identifiedBy"
+            }
+          ]
+        },
+        {
+          "name": "FirstName",
+          "dataType": "string",
+          "dataFormat": "string",
+          "description": "Employee first name",
+          "maximumLength": 50,
+          "appliedTraits": [
+            {
+              "traitReference": "is.requiredAtLevel",
+              "arguments": [
+                {
+                  "name": "level",
+                  "value": "required"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "LastName",
+          "dataType": "string",
+          "dataFormat": "string",
+          "description": "Employee last name",
+          "maximumLength": 50,
+          "appliedTraits": [
+            {
+              "traitReference": "is.requiredAtLevel",
+              "arguments": [
+                {
+                  "name": "level",
+                  "value": "required"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Email",
+          "dataType": "string",
+          "dataFormat": "string",
+          "description": "Employee email address",
+          "maximumLength": 100
+        },
+        {
+          "name": "DepartmentId",
+          "dataType": "integer",
+          "dataFormat": "int32",
+          "description": "Department identifier"
+        },
+        {
+          "name": "Salary",
+          "dataType": "decimal",
+          "dataFormat": "decimal",
+          "description": "Employee salary",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": "10"
+                },
+                {
+                  "name": "scale",
+                  "value": "2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "HireDate",
+          "dataType": "date",
+          "dataFormat": "date",
+          "description": "Date employee was hired"
+        },
+        {
+          "name": "IsActive",
+          "dataType": "boolean",
+          "dataFormat": "boolean",
+          "description": "Whether employee is currently active"
+        },
+        {
+          "name": "LastModified",
+          "dataType": "dateTime",
+          "dataFormat": "dateTime",
+          "description": "Last modification timestamp"
+        }
+      ]
+    }
+  ]
+}

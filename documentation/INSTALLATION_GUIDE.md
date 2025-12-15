@@ -2,6 +2,8 @@
 
 > **⚠️ DISCLAIMER**: This guide is for a **private fork** of the Azure Spark CDM Connector, optimized for Apache Spark 3.5. This version is **NOT officially supported by Microsoft**.
 
+> **⚠️ LIMITED TESTING DISCLAIMER**: The testing of features of the Spark CDM Connector is limited, so not all features might work as expected. Use with caution and test thoroughly in your specific environment.
+
 This guide provides step-by-step instructions for installing and using the Spark CDM Connector with Apache Spark 3.5 on:
 - **Microsoft Fabric Runtime 1.3** (Spark 3.5, Delta 3.2)
 - **Azure Synapse Analytics** (Spark 3.5 pools)
@@ -253,7 +255,7 @@ OneLake and ADLS Gen2 format for CDM Connector:
     manifestPath: "ContosoAnalytics/SalesData.Lakehouse/Files/customer-data/Customers.manifest.cdm.json"
 ```
 
-## Step 5: Writing CDM Data **[⚠️ Not supported yet]**
+## Step 5: Writing CDM Data
 
 ### Write with Entity Definition
 
@@ -286,7 +288,7 @@ processedData
   .save()
 ```
 
-## Step 6: Advanced Configuration **[⚠️ Not supported yet]**
+## Step 6: Advanced Configuration **[⚠️ Not tested yet]**
 
 ### Performance Tuning for Fabric
 

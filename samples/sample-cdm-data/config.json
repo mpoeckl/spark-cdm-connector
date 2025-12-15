@@ -1,0 +1,14 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [],
+  "definitions": [],
+  "defaultNamespace": "local",
+  "adapters": [
+    {
+      "type": "local",
+      "config": {
+        "root": "/"
+      }
+    }
+  ]
+}
