@@ -1,6 +1,6 @@
 # Test CDM Data for Spark 3.5 Connector
 
-The directory [sample-cdm-data](samples\sample-cdm-data) contains complete test CDM data for validating the Spark 3.5 CDM Connector with Microsoft Fabric Runtime 1.3 and Azure Synapse Analytics Apache Spark Pools 3.5.
+The directory [sample-cdm-data](sample-cdm-data) contains complete test CDM data for validating the Spark 3.5 CDM Connector with Microsoft Fabric Runtime 1.3 and Azure Synapse Analytics Apache Spark Pools 3.5.
 
 ## Structure
 
