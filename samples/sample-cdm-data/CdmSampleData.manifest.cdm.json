@@ -92,6 +92,11 @@
           ]
         }
       ]
+    },
+    {
+      "type" : "LocalEntity",
+      "entityName" : "CustomerProcessed",
+      "entityPath" : "Customer.cdm.json/Customer"
     }
   ]
 }

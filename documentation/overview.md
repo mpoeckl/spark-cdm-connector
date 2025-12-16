@@ -54,8 +54,8 @@ The following scenarios are supported:
 
 The following capabilities or limitations apply:
 - Supports reading and writing to CDM folders in ADLS gen2 **with HNS enabled**.
-- Supports reading from CDM folders described by either manifest or model.json files.
-- Supports writing to CDM folders described by a manifest file. Write support for model.json is not supported.
+- Supports reading from CDM folders in both **manifest.cdm.json** format (CDM 1.0+) and **model.json** format (CDM <1.0, legacy format used by Power BI/Dataverse Link).
+- Supports writing to CDM folders described by a manifest.cdm.json file only. Write support for model.json is not supported.
 - Supports data in CSV format with/without column headers and with user selectable delimiter character.
 - Supports data in Apache Parquet format, including nested parquet.
 - Supports sub-manifests on read, optional use of entity-scoped submanifests on write.
@@ -197,7 +197,7 @@ The following options identify the entity in the CDM folder that is either being
 |**Option**  |**Description**  |**Pattern and example usage**  |
 |---------|---------|:---------:|
 |storage|The endpoint URL for the ADLS gen2 storage account *with HNS enabled* in which the CDM folder is located.  <br/>Use the **dfs**.core.windows.net URL | \<accountName\>.dfs.core.windows.net "myAccount.dfs.core.windows.net"|
-|manifestPath|The relative path to the manifest or model.json file in the storage account. For read, can be a root manifest or a sub-manifest or a model.json. For write, must be a root manifest.|\<container\>/{\<folderPath\>/}\<manifestFileName>, <br/>"mycontainer/default.manifest.cdm.json" "models/hr/employees.manifest.cdm.json" <br/> "models/hr/employees/model.json" (read only)         |
+|manifestPath|The relative path to the manifest.cdm.json (CDM 1.0+) or model.json (CDM <1.0) file in the storage account. For read, can be a root manifest, sub-manifest, or model.json. For write, must be a root manifest.cdm.json.|\<container\>/{\<folderPath\>/}\<manifestFileName>, <br/>"mycontainer/default.manifest.cdm.json" "models/hr/employees.manifest.cdm.json" <br/> "models/hr/employees/model.json" (read only, CDM <1.0)         |
 |entity| The name of the source or target entity in the manifest. When writing an entity for the first time in a folder, the resolved entity definition will be given this name.  Entity name is case sensitive.| \<entityName\> <br/>"customer"|
 |maxCDMThreads| The maximum number of concurrent reads while resolving an entity definition. | Any valid integer. Eg - 5|
 

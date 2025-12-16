@@ -239,11 +239,13 @@ OneLake and ADLS Gen2 format for CDM Connector:
 1. ADLS Gen2:
 ```
     storage: "[StorageAccountName].dfs.core.windows.net"
-    manifestPath: "[Container]/[Folder]/[manifest-file].manifest.cdm.json"
+    manifestPath: "[Container]/[Folder]/[manifest-file].manifest.cdm.json"  # CDM 1.0+
+                 "[Container]/[Folder]/model.json"                          # CDM <1.0 (read only)
 
     Example:
     storage: "mystorage.dfs.core.windows.net"
     manifestPath: "ContosoAnalytics/customer-data/Customers.manifest.cdm.json"
+                  "dataverse-exports/crm/model.json"  # For Dataverse Link exports
 ```
 2. OneLake:
 ```
@@ -254,6 +256,8 @@ OneLake and ADLS Gen2 format for CDM Connector:
     storage: "onelake.dfs.fabric.microsoft.com"
     manifestPath: "ContosoAnalytics/SalesData.Lakehouse/Files/customer-data/Customers.manifest.cdm.json"
 ```
+
+**Note**: model.json format (CDM <1.0) is used by Synapse Dataverse Link and Power BI/Power Platform dataflows. For model.json, ensure a config.json file exists in the same directory to define storage adapters.
 
 ## Step 5: Writing CDM Data
 

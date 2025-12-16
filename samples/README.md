@@ -2,8 +2,11 @@
 
 The directory [sample-cdm-data](sample-cdm-data) contains complete test CDM data for validating the Spark 3.5 CDM Connector with Microsoft Fabric Runtime 1.3 and Azure Synapse Analytics Apache Spark Pools 3.5.
 
+The directory [crm-cdm](crm-cdm) contains sample Synapse Dataverse Link export data in model.json format (CDM <1.0).
+
 ## Structure
 
+### sample-cdm-data (CDM 1.0+ / manifest.cdm.json format)
 - **CdmSampleData.manifest.cdm.json**: Main manifest file defining the CDM folder structure
 - **Employee.cdm.json**: Employee entity definition with various data types
 - **Customer.cdm.json**: Customer entity definition with business data
@@ -57,6 +60,7 @@ These files provide complete sample data to test:
 
 ## Sample Test Code
 
+### Reading manifest.cdm.json format (CDM 1.0+)
 ```scala
 // Read Employee entity using ADLS Gen2 and SAS token
 val employees = spark.read
@@ -71,10 +75,29 @@ employees.show()
 employees.printSchema()
 ```
 
+### Reading model.json format (CDM <1.0, Dataverse Link)
+```scala
+// Read account entity from Synapse Dataverse Link export
+val accounts = spark.read
+  .format("com.microsoft.cdm")
+  .option("appId", "your-app-id")
+  .option("appKey", "your-app-key")
+  .option("tenantId", "your-tenant-id")
+  .option("storage", "your-storage-account.dfs.core.windows.net")
+  .option("manifestPath", "your-container/crm-cdm/model.json")
+  .option("entity", "account")
+  .load()
+
+accounts.show()
+accounts.printSchema()
+```
+**Note**: model.json format requires a config.json file in the same directory to resolve relative paths.
+
 ## Notes
 
 - All test data is synthetic and for testing purposes only at your own risk
-- The structure follows CDM 1.0 format standards
+- sample-cdm-data follows CDM 1.0+ format standards (manifest.cdm.json)
+- crm-cdm follows CDM <1.0 format (model.json) as exported by Synapse Dataverse Link
 - Compatible and testet with Fabric Runtime 1.3 (Spark 3.5) and Azure Synapse Analytics Apache Spark Pools 3.5
 - Includes proper CDM traits and data type specifications
 - Employee entity includes both CSV and Parquet partitions for comprehensive format testing
